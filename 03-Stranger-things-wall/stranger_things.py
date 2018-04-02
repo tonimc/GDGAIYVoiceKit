@@ -14,6 +14,7 @@
 
 import os
 import logging
+import unicodedata
 
 import aiy.audio
 import aiy.cloudspeech
@@ -48,11 +49,12 @@ def websocket_config():
 def get_voice_command(recognizer):
     print('Listening...')
     text = recognizer.recognize()
-    return text
+    """ Normalise (normalize) unicode data in Python to remove umlauts, accents etc. """
+    text = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore')
+    return text.decode('utf-8').lower()
 
 
 def send_ws_msg(socket, text):
-    print(u'SEND TO SOCKET: ', text)
     socket.emit('msg', text)
 
 
@@ -65,7 +67,7 @@ def send_msg_to_wall(led, socket, text):
 def play_stranger_things_music():
     # File downloaded from https://www.looperman.com/loops/detail/120883/stranger-things-bass-by-dokfraktal-free-82bpm-cinematic-bass-synth-loop
     aiy.voicehat.get_led().set_state(aiy.voicehat.LED.BLINK)
-    aiy.audio.play_wave(os.path.abspath('./looperman-l-1199946-0120883-dokfraktal-stranger-bass.wav'))
+    # aiy.audio.play_wave(os.path.abspath('./looperman-l-1199946-0120883-dokfraktal-stranger-bass.wav'))
 
 
 def main():
@@ -90,13 +92,14 @@ def main():
         else:
             print(u'You said "', text, '"')
 
-            if u'hay alguien ahí' in text:
+            if u'hay alguien ahi' in text:
                 send_msg_to_wall(led, socket, u'SI')
 
-            if u'quién eres' in text:
+            if u'quien eres' in text:
                 send_msg_to_wall(led, socket, u'GDGOURENSE')
 
             elif 'adios' in text:
+                aiy.audio.get_recorder().stop()
                 send_msg_to_wall(led, socket, u'BYE BYE')
                 break
 

@@ -14,7 +14,6 @@
 
 import os
 import logging
-import unicodedata
 
 import aiy.audio
 import aiy.cloudspeech
@@ -49,12 +48,11 @@ def websocket_config():
 def get_voice_command(recognizer):
     print('Listening...')
     text = recognizer.recognize()
-    """ Normalise (normalize) unicode data in Python to remove umlauts, accents etc. """
-    text = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore')
-    return text.decode('utf-8').lower()
+    return text.lower()
 
 
 def send_ws_msg(socket, text):
+    print(u'SEND TO SOCKET: ', text)
     socket.emit('msg', text)
 
 
@@ -92,13 +90,13 @@ def main():
         else:
             print(u'You said "', text, '"')
 
-            if u'hay alguien ahi' in text:
+            if u'hay alguien ahí' in text:
                 send_msg_to_wall(led, socket, u'SI')
 
-            if u'quien eres' in text:
+            if u'quién eres' in text:
                 send_msg_to_wall(led, socket, u'GDGOURENSE')
 
-            elif 'adios' in text:
+            elif u'adiós' in text:
                 aiy.audio.get_recorder().stop()
                 send_msg_to_wall(led, socket, u'BYE BYE')
                 break

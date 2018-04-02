@@ -67,7 +67,7 @@ def send_msg_to_wall(led, socket, text):
 def play_stranger_things_music():
     # File downloaded from https://www.looperman.com/loops/detail/120883/stranger-things-bass-by-dokfraktal-free-82bpm-cinematic-bass-synth-loop
     aiy.voicehat.get_led().set_state(aiy.voicehat.LED.BLINK)
-    # aiy.audio.play_wave(os.path.abspath('./looperman-l-1199946-0120883-dokfraktal-stranger-bass.wav'))
+    aiy.audio.play_wave(os.path.abspath('./looperman-l-1199946-0120883-dokfraktal-stranger-bass.wav'))
 
 
 def main():

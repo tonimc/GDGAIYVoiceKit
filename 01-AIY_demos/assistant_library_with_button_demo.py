@@ -18,19 +18,17 @@
 The Google Assistant Library has direct access to the audio API, so this Python
 code doesn't need to record audio. Hot word detection "OK, Google" is supported.
 
-The Google Assistant Library can be installed with:
-    env/bin/pip install google-assistant-library==0.0.2
-
 It is available for Raspberry Pi 2/3 only; Pi Zero is not supported.
 """
 
 import logging
+import platform
 import sys
 import threading
 
 import aiy.assistant.auth_helpers
+from aiy.assistant.library import Assistant
 import aiy.voicehat
-from google.assistant.library import Assistant
 from google.assistant.library.event import EventType
 
 logging.basicConfig(
@@ -47,6 +45,7 @@ class MyAssistant(object):
     thread. Otherwise, the on_button_pressed() method will never get a chance to
     be invoked.
     """
+
     def __init__(self):
         self._task = threading.Thread(target=self._run_task)
         self._can_start_conversation = False
@@ -84,7 +83,9 @@ class MyAssistant(object):
         elif event.type == EventType.ON_END_OF_UTTERANCE:
             status_ui.status('thinking')
 
-        elif event.type == EventType.ON_CONVERSATION_TURN_FINISHED:
+        elif (event.type == EventType.ON_CONVERSATION_TURN_FINISHED
+              or event.type == EventType.ON_CONVERSATION_TURN_TIMEOUT
+              or event.type == EventType.ON_NO_RESPONSE):
             status_ui.status('ready')
             self._can_start_conversation = True
 
@@ -101,6 +102,9 @@ class MyAssistant(object):
 
 
 def main():
+    if platform.machine() == 'armv6l':
+        print('Cannot run hotword demo on Pi Zero!')
+        exit(-1)
     MyAssistant().start()
 
 

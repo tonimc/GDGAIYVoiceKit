@@ -21,8 +21,8 @@ import aiy.voicehat
 
 from socketIO_client_nexus import SocketIO, LoggingNamespace
 
-SOCKET_IP_ADDR = '192.168.13.18'
-SOCKET_PORT = 3000
+SOCKET_ADDR = 'https://cherry-crisp-54477.herokuapp.com'
+SOCKET_PORT = 443
 
 def on_connect():
     print('connect')
@@ -35,7 +35,7 @@ def on_reconnect():
 
 
 def websocket_config():
-    socket = SocketIO(SOCKET_IP_ADDR, SOCKET_PORT, LoggingNamespace)
+    socket = SocketIO(SOCKET_ADDR, SOCKET_PORT, LoggingNamespace)
     socket.on('connect', on_connect)
     socket.on('disconnect', on_disconnect)
     socket.on('reconnect', on_reconnect)
@@ -54,6 +54,12 @@ def get_voice_command(recognizer):
 def send_ws_msg(socket, text):
     print(u'SEND TO SOCKET: ', text)
     socket.emit('msg', text)
+
+
+def send_msg_to_wall(led, socket, text):
+    print(u'SEND TO SOCKET: ', text)
+    send_ws_msg(socket, text)
+    led.set_state(aiy.voicehat.LED.BLINK)
 
 
 def play_stranger_things_music():
@@ -85,18 +91,16 @@ def main():
             print(u'You said "', text, '"')
 
             if u'hay alguien ahí' in text:
-                print(u'SEND TO SOCKET: SI ')
-                send_ws_msg(socket, u'SI')
-                led.set_state(aiy.voicehat.LED.BLINK)
+                send_msg_to_wall(led, socket, u'SI')
 
             if u'quién eres' in text:
-                print(u'SEND TO SOCKET: GDGOURENSE ')
-                send_ws_msg(socket, u'GDGOURENSE')
-                led.set_state(aiy.voicehat.LED.BLINK)
+                send_msg_to_wall(led, socket, u'GDGOURENSE')
 
             elif 'adios' in text:
+                send_msg_to_wall(led, socket, u'BYE BYE')
                 break
 
+    play_stranger_things_music()
     led.set_state(aiy.voicehat.LED.OFF)
 
 

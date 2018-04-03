@@ -19,7 +19,7 @@ La pared de Stranger Things con las luces, las puedes ver en https://cherry-cris
 
 Si quieres crear tu propio servidor puedes descargar el código del repo https://github.com/monchopena/stranger-things-wall-socket
 
-Para este ejemplo hemos usado los gráficos de Nestor Plasencia y también partimos de su código: https://www.youtube.com/watch?v=5-PoFOjg4wE
+Mención especial y agradecimientos a Nestor Plasencia, ya que para este ejemplo hemos usado sus gráficos y también nos basamos en su código: https://www.youtube.com/watch?v=5-PoFOjg4wE
 
 ## 06-dialog-flow
 

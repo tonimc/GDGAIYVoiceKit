@@ -48,7 +48,7 @@ def websocket_config():
 def get_voice_command(recognizer):
     print('Listening...')
     text = recognizer.recognize()
-    return text.lower()
+    return text.lower() if text else None
 
 
 def send_ws_msg(socket, text):

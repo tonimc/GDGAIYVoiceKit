@@ -3,6 +3,8 @@ Repositorio con las DEMOS realizadas en el meetup del GDG Ourense https://www.me
 
 *IMPORTANTE:* Debes usar la última versión de la Raspbian preparada por AIY Project, en la cul no es necesario activar ningún entorno virtual.... te recomendamos que uses la imagen oficial que puedes descargar aquí https://dl.google.com/dl/aiyprojects/aiyprojects-latest.img.xza
 
+A mayores de las librerías que ya están en la raspbian debes instalar los paquetes que vienen en requirements.txt
+
 Si tienes algún problema, ejecuta el siguiente comando:
 
 ```bash
